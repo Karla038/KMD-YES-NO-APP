@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:kmd_yes_no_app/presentation/widgets/chat/her_message.dart';
+import 'package:kmd_yes_no_app/presentation/widgets/chat/my_message.dart';
+import 'package:kmd_yes_no_app/presentation/widgets/shared/message_field_box.dart';
+
 
 class ChatScreen extends StatelessWidget{
   const ChatScreen({super.key});
@@ -25,6 +28,7 @@ class ChatScreen extends StatelessWidget{
 
 class _ChatView extends StatelessWidget {
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,12 +40,17 @@ class _ChatView extends StatelessWidget {
               child: 
               ListView.builder(
                 itemCount: 50,
-                itemBuilder: (context, index){
-                  return Text('Indice:  $index');
+                itemBuilder: (context, index  ){
+                  return (index % 2 == 0) ? const MyMessage() : const HerMessage();
+
+                 // if(index % 2 == 0){
+                 //   return const MyMessage();
+                //  }
+                //  return const HerMessage();
               }
               )
             ),
-            const Text('Mundo')
+            const MessageFieldBox()
           ]
         ),
       ),
