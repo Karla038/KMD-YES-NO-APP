@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kmd_yes_no_app/domain/entities/message.dart';
+import 'package:kmd_yes_no_app/presentation/providers/chat_provider.dart';
 import 'package:kmd_yes_no_app/presentation/widgets/chat/her_message.dart';
 import 'package:kmd_yes_no_app/presentation/widgets/chat/my_message.dart';
 import 'package:kmd_yes_no_app/presentation/widgets/shared/message_field_box.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+
+
 
 
 class ChatScreen extends StatelessWidget{
@@ -31,6 +37,9 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final chatProvider = context.watch<ChatProvider>();
+
     return SafeArea(
       child:  Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -39,9 +48,14 @@ class _ChatView extends StatelessWidget {
             Expanded(
               child: 
               ListView.builder(
-                itemCount: 50,
+                controller:chatProvider.chatScrollController,
+                itemCount: chatProvider.messages.length,
                 itemBuilder: (context, index  ){
-                  return (index % 2 == 0) ? const MyMessage() : const HerMessage();
+                  //return (index % 2 == 0) ? const MyMessage() : const HerMessage();
+                  final message = chatProvider.messages[index];
+                  return (message.fromWho == FromWho.me) 
+                  ?  MyMessage(message:message)
+                  :  HerMessage( message: message,);
 
                  // if(index % 2 == 0){
                  //   return const MyMessage();
@@ -50,7 +64,10 @@ class _ChatView extends StatelessWidget {
               }
               )
             ),
-            const MessageFieldBox()
+            MessageFieldBox(
+            //onValue:(value)=> chatProvider.sendMessages(value),)
+            onValue: chatProvider.sendMessage,
+            ),
           ]
         ),
       ),

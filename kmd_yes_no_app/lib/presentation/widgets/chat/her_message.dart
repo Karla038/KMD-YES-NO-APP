@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kmd_yes_no_app/domain/entities/message.dart';
 
 class HerMessage extends StatelessWidget {
 
-  const HerMessage({super.key});
+  final Message message;
+
+  const HerMessage({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +19,13 @@ class HerMessage extends StatelessWidget {
             color: colors.secondary,  
             borderRadius: const BorderRadius.all(Radius.circular(20))
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text('Saludos!', style: TextStyle(color: Colors.white)),
+          child:  Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(message.text, style: const TextStyle(color: Colors.white)),
           ),
         ),
         const SizedBox(height: 5),
-          _Image(),
+          _Image(image: message.imageUrl!),
         const SizedBox(height: 20)
       ],
     );
@@ -31,6 +34,9 @@ class HerMessage extends StatelessWidget {
 }
 
 class _Image extends StatelessWidget{
+  final String image;
+
+  const _Image({required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,8 @@ class _Image extends StatelessWidget{
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Image.network('https://yesno.wtf/assets/yes/5-64c2804cc48057b94fd0b3eaf323d92c.gif',
+      child: Image.network(
+        image,
       width : size.width * 0.5,
       height: 150,
       fit: BoxFit.cover,
